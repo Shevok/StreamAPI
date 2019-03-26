@@ -47,7 +47,7 @@ public class DefaultStream implements Operation<UserBase> {
 
     @Override
     public boolean isCharacterPresentInAllNames(Collection<UserBase> entities, String character) {
-        return false;
+        return entities.stream().allMatch(element -> element.getName().contains(character));
     }
 
     @Override
