@@ -47,16 +47,21 @@ public class DefaultStream implements Operation<UserBase> {
 
     @Override
     public boolean isCharacterPresentInAllNames(Collection<UserBase> entities, String character) {
-        return entities.stream().allMatch(element -> element.getName().contains(character));
+        return entities.stream()
+                .allMatch(element -> element.getName().contains(character));
     }
 
     @Override
     public Collection<UserBase> addValueToAllNames(Collection<UserBase> entities, String value) {
-        return null;
+        return entities.stream()
+                .map(u -> UserBase.of(u.getName() + value, u.getAge()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Collection<UserBase> sortByNameThanByAge(Collection<UserBase> entities) {
-        return null;
+        return entities.stream()
+                .sorted(Comparator.comparing(UserBase::getName).thenComparing(UserBase::getAge))
+                .collect(Collectors.toList());
     }
 }
