@@ -38,7 +38,7 @@ public class DefaultStream implements Operation<UserBase> {
         return entities.stream()
                 .skip(2)
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
     @Override
