@@ -10,12 +10,12 @@ public class DefaultStream implements Operation<UserBase> {
 
     @Override
     public Collection<UserBase> removeWithMaxAge(Collection<UserBase> entities) {
+        int maxAge = entities.stream()
+                .mapToInt(UserBase::getAge)
+                .max()
+                .orElse(Integer.MIN_VALUE);
         return  entities.stream()
-                .filter(userBase -> userBase.getAge() <
-                        entities.stream()
-                                .mapToInt(UserBase::getAge)
-                                .max()
-                                .orElse(Integer.MIN_VALUE))
+                .filter(userBase -> userBase.getAge() !=  maxAge)
                 .collect(Collectors.toList());
 
     }
@@ -23,7 +23,7 @@ public class DefaultStream implements Operation<UserBase> {
     @Override
     public Collection<UserBase> removeAllOlder(Collection<UserBase> entities, int age) {
         return entities.stream()
-                .filter(userBase -> userBase.getAge() > age)
+                .filter(userBase -> userBase.getAge() <= age)
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +52,7 @@ public class DefaultStream implements Operation<UserBase> {
     @Override
     public boolean isCharacterPresentInAllNames(Collection<UserBase> entities, String character) {
         return entities.stream()
-                .allMatch(element -> element.getName().contains(character));
+                .allMatch(element -> element.getName().toLowerCase().contains(character));
     }
 
     @Override
